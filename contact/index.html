@@ -64,6 +64,17 @@ body{background:white}
 .invitation{box-shadow:none;max-width:none}
 .page{min-height:100vh;page-break-after:always}
 }
+.guestbook{max-width:560px;margin:36px auto 0;padding:24px 20px;background:rgba(255,255,255,.72);border:1px solid rgba(150,117,72,.24);text-align:left}
+.guestbook h3{margin:0 0 8px;text-align:center;font-size:21px;font-weight:500;color:#5f4a31}
+.guestbook-intro{margin:0 0 18px;text-align:center;font-size:14px;color:#7b6b5b}
+.guestbook-form{display:grid;gap:10px}
+.guestbook-form input,.guestbook-form textarea{box-sizing:border-box;width:100%;padding:10px 12px;border:1px solid rgba(150,117,72,.3);background:#fffdf9;color:#4c433a;font:inherit}
+.guestbook-form textarea{min-height:86px;resize:vertical}
+.guestbook-form button{padding:11px;border:0;background:#9a7140;color:#fff;font:inherit;cursor:pointer}
+.guestbook-status{min-height:1.4em;margin:10px 0 0;text-align:center;font-size:13px;color:#8a6044}
+.guestbook-list{display:grid;gap:10px;margin-top:20px}
+.guestbook-item{padding:12px;background:#fffdf9;border-left:3px solid #b38a50}
+.guestbook-item strong{color:#76562f}.guestbook-item p{margin:5px 0 0;white-space:pre-wrap;color:#5d5145;font-size:14px}
 </style>
 </head>
 <body>
@@ -117,6 +128,18 @@ body{background:white}
     </div>
   </div>
 
+  <div class="guestbook">
+    <h3>축하의 말씀을 남겨 주세요</h3>
+    <p class="guestbook-intro">따뜻한 축복과 메시지를 남겨 주시면 감사하겠습니다.</p>
+    <form class="guestbook-form" id="guestbook-form">
+      <input id="guestbook-name" name="name" type="text" maxlength="30" placeholder="이름" required>
+      <textarea id="guestbook-message" name="message" maxlength="500" placeholder="축하 메시지를 남겨 주세요" required></textarea>
+      <button type="submit">메시지 남기기</button>
+    </form>
+    <div class="guestbook-status" id="guestbook-status" role="status"></div>
+    <div class="guestbook-list" id="guestbook-list"></div>
+  </div>
+
   <div class="bottom-note">
     직접 모시지 못한 점 다시 한번 너그럽게 이해해 주시면 감사하겠습니다.<br>
     멀리서 보내 주시는 따뜻한 축복을<br>
@@ -126,5 +149,55 @@ body{background:white}
 </section>
 
 </div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+  const supabaseClient = window.supabase.createClient(
+    'https://fcmweukmslrngzlatxmf.supabase.co',
+    'sb_publishable_0wX0kzxCLTEurQyVWP9Ybg_Lpon7Go7'
+  );
+  const guestbookForm = document.getElementById('guestbook-form');
+  const guestbookStatus = document.getElementById('guestbook-status');
+  const guestbookList = document.getElementById('guestbook-list');
+
+  function renderMessages(messages) {
+    guestbookList.replaceChildren();
+    messages.forEach((item) => {
+      const article = document.createElement('article');
+      article.className = 'guestbook-item';
+      const name = document.createElement('strong');
+      name.textContent = item.name;
+      const message = document.createElement('p');
+      message.textContent = item.message;
+      article.append(name, message);
+      guestbookList.append(article);
+    });
+  }
+
+  async function loadMessages() {
+    const { data, error } = await supabaseClient
+      .from('messages').select('name,message,created_at').order('created_at', { ascending: false });
+    if (error) {
+      guestbookStatus.textContent = '방명록을 불러오지 못했습니다. Supabase 테이블과 정책을 확인해 주세요.';
+      return;
+    }
+    renderMessages(data || []);
+  }
+
+  guestbookForm.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    guestbookStatus.textContent = '저장 중입니다...';
+    const name = document.getElementById('guestbook-name').value.trim();
+    const message = document.getElementById('guestbook-message').value.trim();
+    const { error } = await supabaseClient.from('messages').insert({ name, message });
+    if (error) {
+      guestbookStatus.textContent = '저장하지 못했습니다. 잠시 후 다시 시도해 주세요.';
+      return;
+    }
+    guestbookForm.reset();
+    guestbookStatus.textContent = '메시지가 저장되었습니다. 감사합니다.';
+    loadMessages();
+  });
+  loadMessages();
+</script>
 </body>
 </html>
