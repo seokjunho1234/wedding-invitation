@@ -37,3 +37,29 @@
 ## 방명록
 
 한국어·일본어 불참자용 페이지의 메시지는 Supabase에 저장됩니다. 운영 시 Supabase의 RLS 정책과 공개용 publishable key 설정을 확인하세요. secret key는 HTML이나 저장소에 넣지 않습니다.
+## 개인 게스트 링크
+
+각 링크를 그대로 복사해 해당 게스트에게 보내면 됩니다. 개인 페이지에서도 이름과 메시지를 남길 수 있습니다.
+
+### 한국어 참석자
+
+- 성수진: <https://seokjunho1234.github.io/wedding-invitation/attending/guests/seong-sujin.html>
+
+### 일본어 참석자
+
+- 山口 ちはる: <https://seokjunho1234.github.io/wedding-invitation/japan/guests/yamaguchi-chiharu.html>
+
+### 중국어 번체 참석자
+
+- 張雅婷: <https://seokjunho1234.github.io/wedding-invitation/taiwan/guests/zhang-yating.html>
+- 梁嘉文: <https://seokjunho1234.github.io/wedding-invitation/taiwan/guests/liang-jiawen.html>
+- 王詩閔: <https://seokjunho1234.github.io/wedding-invitation/taiwan/guests/wang-shimin.html>
+- 曾瀞儀: <https://seokjunho1234.github.io/wedding-invitation/taiwan/guests/zeng-jingyi.html>
+- 林俞妏: <https://seokjunho1234.github.io/wedding-invitation/taiwan/guests/lin-yuwen.html>
+- 王芷英: <https://seokjunho1234.github.io/wedding-invitation/taiwan/guests/wang-zhiying.html>
+- 葉肇倫: <https://seokjunho1234.github.io/wedding-invitation/taiwan/guests/ye-zhaolun.html>
+- 許雅雯: <https://seokjunho1234.github.io/wedding-invitation/taiwan/guests/xu-yawen.html>
+- 梁碧宗: <https://seokjunho1234.github.io/wedding-invitation/taiwan/guests/liang-bizong.html>
+- 陳淑琴: <https://seokjunho1234.github.io/wedding-invitation/taiwan/guests/chen-shuqin.html>
+
+개인 페이지의 메시지는 기존 Supabase `messages` 테이블에 저장됩니다. 모든 개인 페이지의 메시지 목록은 같은 방명록을 공유합니다.

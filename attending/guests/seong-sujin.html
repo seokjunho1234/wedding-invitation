@@ -71,6 +71,7 @@ body{background:white}
 .page{min-height:100vh;page-break-after:always}
 }
 </style>
+<link rel="stylesheet" href="../../assets/guestbook.css">
 </head>
 <body>
 <div class="invitation">
@@ -125,9 +126,22 @@ body{background:white}
     함께해 주셔서 진심으로 감사드리며,<br>
     행복한 그날, 반가운 모습으로 뵙겠습니다.
   </div>
-  <div class="signature">Junho &amp; Yaping</div>
+ <div class="signature">Junho &amp; Yaping</div>
+  <div class="personal-guestbook">
+    <h3>축하의 말씀을 남겨 주세요</h3>
+    <p class="personal-guestbook-intro">따뜻한 축복과 메시지를 남겨 주시면 감사하겠습니다.</p>
+    <form>
+      <input name="name" type="text" maxlength="30" placeholder="이름" required>
+      <textarea name="message" maxlength="500" placeholder="축하 메시지를 남겨 주세요" required></textarea>
+      <button type="submit">메시지 남기기</button>
+    </form>
+    <div class="personal-guestbook-status" role="status"></div>
+    <div class="personal-guestbook-list"></div>
+  </div>
 </section>
 
 </div>
 </body>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../../assets/guestbook.js"></script>
 </html>
