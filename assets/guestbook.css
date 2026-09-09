@@ -7,5 +7,9 @@
 .personal-guestbook button{padding:11px;border:0;background:#9a7140;color:#fff;font:inherit;cursor:pointer}
 .personal-guestbook-status{min-height:1.5em;margin-top:10px;color:#76562f;font-size:13px}
 .personal-guestbook-list{display:grid;gap:8px;margin-top:14px;text-align:left}
+.personal-guestbook-pagination{display:flex;justify-content:center;align-items:center;gap:10px;margin-top:14px}
+.personal-guestbook-pagination button{padding:6px 12px;border:1px solid rgba(150,117,72,.35);background:#fffdf9;color:#76562f;cursor:pointer}
+.personal-guestbook-pagination button:disabled{opacity:.4;cursor:default}
+.personal-guestbook-pagination span{font-size:13px;color:#71675e}
 .personal-guestbook-item{padding:10px;background:#fff;border-left:3px solid #b38a50}
 .personal-guestbook-item strong{color:#76562f}.personal-guestbook-item p{margin:4px 0 0;white-space:pre-wrap;color:#5d5145;font-size:13px}

@@ -47,7 +47,7 @@
 
 ### 일본어 참석자
 
-- 山口 ちはる: <https://seokjunho1234.github.io/wedding-invitation/japan/guests/yamaguchi-chiharu.html>
+- 山口 千春: <https://seokjunho1234.github.io/wedding-invitation/japan/guests/yamaguchi-chiharu.html>
 
 ### 중국어 번체 참석자
 

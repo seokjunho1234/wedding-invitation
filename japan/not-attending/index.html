@@ -78,6 +78,10 @@ body{background:white}
 .guestbook-form button{padding:11px;border:0;background:#9a7140;color:#fff;font:inherit;cursor:pointer}
 .guestbook-status{min-height:1.4em;margin:10px 0 0;text-align:center;font-size:13px;color:#8a6044}
 .guestbook-list{display:grid;gap:10px;margin-top:20px}
+.guestbook-pagination{display:flex;justify-content:center;align-items:center;gap:10px;margin-top:14px}
+.guestbook-pagination button{padding:6px 12px;border:1px solid rgba(150,117,72,.35);background:#fffdf9;color:#76562f;cursor:pointer}
+.guestbook-pagination button:disabled{opacity:.4;cursor:default}
+.guestbook-pagination span{font-size:13px;color:#71675e}
 .guestbook-item{padding:12px;background:#fffdf9;border-left:3px solid #b38a50}
 .guestbook-item strong{color:#76562f}.guestbook-item p{margin:5px 0 0;white-space:pre-wrap;color:#5d5145;font-size:14px}
 </style>
@@ -143,6 +147,7 @@ body{background:white}
     </form>
     <div class="guestbook-status" id="guestbook-status" role="status"></div>
     <div class="guestbook-list" id="guestbook-list"></div>
+    <div class="guestbook-pagination" id="guestbook-pagination"></div>
   </div>
 
   <div class="bottom-note">
@@ -163,10 +168,16 @@ body{background:white}
   const guestbookForm = document.getElementById('guestbook-form');
   const guestbookStatus = document.getElementById('guestbook-status');
   const guestbookList = document.getElementById('guestbook-list');
+  const guestbookPagination = document.getElementById('guestbook-pagination');
+  const pageSize = 10;
+  let allMessages = [];
+  let currentPage = 1;
 
-  function renderMessages(messages) {
+  function renderMessages(messages, page = 1) {
+    allMessages = messages;
+    currentPage = Math.max(1, Math.min(page, Math.ceil(messages.length / pageSize) || 1));
     guestbookList.replaceChildren();
-    messages.forEach((item) => {
+    messages.slice((currentPage - 1) * pageSize, currentPage * pageSize).forEach((item) => {
       const article = document.createElement('article');
       article.className = 'guestbook-item';
       const name = document.createElement('strong');
@@ -176,6 +187,14 @@ body{background:white}
       article.append(name, message);
       guestbookList.append(article);
     });
+    const totalPages = Math.ceil(messages.length / pageSize);
+    guestbookPagination.replaceChildren();
+    if (totalPages > 1) {
+      const previous = document.createElement('button'); previous.textContent = '前へ'; previous.disabled = currentPage === 1; previous.onclick = () => renderMessages(allMessages, currentPage - 1);
+      const label = document.createElement('span'); label.textContent = `${currentPage} / ${totalPages}`;
+      const next = document.createElement('button'); next.textContent = '次へ'; next.disabled = currentPage === totalPages; next.onclick = () => renderMessages(allMessages, currentPage + 1);
+      guestbookPagination.append(previous, label, next);
+    }
   }
 
   async function loadMessages() {
@@ -185,7 +204,7 @@ body{background:white}
       guestbookStatus.textContent = 'メッセージを読み込めませんでした。Supabaseの設定をご確認ください。';
       return;
     }
-    renderMessages(data || []);
+    renderMessages(data || [], 1);
   }
 
   guestbookForm.addEventListener('submit', async (event) => {
